@@ -1,0 +1,10 @@
+rootProject.name = 'entity-variable-storage'
+
+include 'entity-variable-storage-core'
+include 'entity-variable-storage-spring-boot-starter'
+include 'examples:spring-boot-example'
+include 'examples:standalone-example'
+
+// Examples use build-example.gradle (no publishing)
+project(':examples:spring-boot-example').buildFileName = 'build-example.gradle'
+project(':examples:standalone-example').buildFileName = 'build-example.gradle'

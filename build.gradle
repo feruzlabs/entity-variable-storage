@@ -1,0 +1,97 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+allprojects {
+    group = 'com.evs'
+    version = project.findProperty('version') ?: '1.0.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/feruzlabs/entity-variable-storage")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    dependencies {
+        implementation 'org.slf4j:slf4j-api:2.0.9'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+        testImplementation 'org.testcontainers:postgresql:1.19.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    if (!project.path.contains('examples')) {
+        apply plugin: 'maven-publish'
+        java {
+            withJavadocJar()
+            withSourcesJar()
+        }
+        publishing {
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/YOUR_GITHUB_USERNAME/entity-variable-storage")
+                    credentials {
+                        username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                        password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+                    }
+                }
+            }
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+
+                    groupId = project.group
+                    artifactId = project.name
+                    version = project.version
+
+                    pom {
+                        name = project.name
+                        description = 'Universal entity-variable storage system with PostgreSQL partitioning'
+                        url = 'https://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage'
+
+                        licenses {
+                            license {
+                                name = 'The Apache License, Version 2.0'
+                                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = 'YOUR_GITHUB_USERNAME'
+                                name = 'Your Name'
+                                email = 'your.email@example.com'
+                            }
+                        }
+
+                        scm {
+                            connection = 'scm:git:git://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage.git'
+                            developerConnection = 'scm:git:ssh://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage.git'
+                            url = 'https://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

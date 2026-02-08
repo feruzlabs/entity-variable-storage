@@ -1,0 +1,77 @@
+name: Publish to GitHub Packages
+
+on:
+  release:
+    types: [created]
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0)'
+        required: false
+        default: 'SNAPSHOT'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Generate Gradle wrapper
+        if: hashFiles('gradle/wrapper/gradle-wrapper.jar') == ''
+        run: gradle wrapper --gradle-version 8.5
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+            VERSION="${VERSION#v}"
+          elif [ "${{ github.event.inputs.version }}" != "" ] && [ "${{ github.event.inputs.version }}" != "SNAPSHOT" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            VERSION=$(grep '^version=' gradle.properties 2>/dev/null | cut -d'=' -f2 | tr -d ' ' || echo "1.0.0-SNAPSHOT")
+          else
+            BASE_VERSION=$(grep '^version=' gradle.properties 2>/dev/null | cut -d'=' -f2 | tr -d ' ' | sed 's/-SNAPSHOT//' || echo "1.0.0")
+            VERSION="${BASE_VERSION}-SNAPSHOT"
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Build with Gradle
+        run: ./gradlew build -Pversion=${{ steps.version.outputs.VERSION }}
+
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish -Pversion=${{ steps.version.outputs.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            **/build/libs/*.jar
+            **/build/publications/

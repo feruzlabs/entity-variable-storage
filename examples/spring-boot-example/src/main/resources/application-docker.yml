@@ -1,0 +1,5 @@
+# Docker profile - overridden by environment variables
+evs:
+  jdbc-url: ${EVS_JDBC_URL:jdbc:postgresql://postgres:5432/evs_db}
+  username: ${EVS_USERNAME:postgres}
+  password: ${EVS_PASSWORD:postgres}

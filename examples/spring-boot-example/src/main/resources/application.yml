@@ -1,0 +1,10 @@
+evs:
+  jdbc-url: jdbc:postgresql://localhost:5432/evs_db
+  username: postgres
+  password: postgres
+  maximum-pool-size: 25
+  auto-migrate: true
+
+spring:
+  application:
+    name: evs-spring-boot-example

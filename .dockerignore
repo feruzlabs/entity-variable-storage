@@ -1,0 +1,26 @@
+# Build outputs
+**/build/
+**/target/
+.gradle/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Git
+.git/
+.gitignore
+
+# Documentation (not needed for build)
+*.md
+!README.md
+
+# Test outputs
+**/test-results/
+**/reports/
+
+# Gradle wrapper (we need it - don't ignore)
+# !gradlew
+# !gradlew.bat
+# !gradle/wrapper/

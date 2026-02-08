@@ -1,0 +1,4 @@
+# Test config - overridden by @DynamicPropertySource
+spring:
+  application:
+    name: evs-spring-boot-example-test

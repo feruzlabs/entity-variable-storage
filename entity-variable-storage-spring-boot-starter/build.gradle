@@ -1,0 +1,8 @@
+dependencies {
+    api project(':entity-variable-storage-core')
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure:3.2.0'
+    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor:3.2.0'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.2.0'
+}
