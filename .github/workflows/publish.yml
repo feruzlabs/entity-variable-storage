@@ -65,8 +65,8 @@ jobs:
       - name: Publish to GitHub Packages
         run: ./gradlew publish -Pversion=${{ steps.version.outputs.VERSION }}
         env:
-          GITHUB_TOKEN: ${{ secrets.TOK }}
-          GITHUB_ACTOR: ${{ github.actor }}
+          ACTOR: ${{ vars.ACTOR }}
+          TOK: ${{ vars.TOK }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
