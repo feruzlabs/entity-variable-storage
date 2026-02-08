@@ -4,6 +4,8 @@ import com.evs.model.Variable;
 import com.evs.model.VariableType;
 import com.evs.util.JsonUtil;
 
+import org.postgresql.util.PGobject;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,7 +128,7 @@ public class VariableRepository {
             case INTEGER -> ps.setObject(startIdx + 4, variable.value() != null ? ((Number) variable.value()).longValue() : null);
             case FLOAT -> ps.setObject(startIdx + 4, variable.value() != null ? ((Number) variable.value()).doubleValue() : null);
             case BOOLEAN -> ps.setBoolean(startIdx + 4, variable.value() != null && (Boolean) variable.value());
-            case JSON -> ps.setString(startIdx + 4, JsonUtil.toJson(variable.value()));
+            case JSON -> setJsonbParameter(ps, startIdx + 4, variable.value());
             case TIMESTAMP -> ps.setTimestamp(startIdx + 4, variable.value() != null ? Timestamp.from((Instant) variable.value()) : null);
             case BINARY -> ps.setBytes(startIdx + 4, (byte[]) variable.value());
             case UUID -> ps.setObject(startIdx + 4, variable.value());
@@ -220,7 +222,7 @@ public class VariableRepository {
             case INTEGER -> ps.setObject(paramIdx, variable.value() != null ? ((Number) variable.value()).longValue() : null);
             case FLOAT -> ps.setObject(paramIdx, variable.value() != null ? ((Number) variable.value()).doubleValue() : null);
             case BOOLEAN -> ps.setObject(paramIdx, variable.value());
-            case JSON -> ps.setString(paramIdx, JsonUtil.toJson(variable.value()));
+            case JSON -> setJsonbParameter(ps, paramIdx, variable.value());
             case TIMESTAMP -> ps.setTimestamp(paramIdx, variable.value() != null ? Timestamp.from((Instant) variable.value()) : null);
             case BINARY -> ps.setBytes(paramIdx, (byte[]) variable.value());
             case UUID -> ps.setObject(paramIdx, variable.value());
@@ -279,5 +281,17 @@ public class VariableRepository {
 
     private static Instant toInstant(Timestamp ts) {
         return ts != null ? ts.toInstant() : null;
+    }
+
+    private static void setJsonbParameter(PreparedStatement ps, int index, Object value) throws SQLException {
+        String json = JsonUtil.toJson(value);
+        if (json != null) {
+            PGobject pgObject = new PGobject();
+            pgObject.setType("jsonb");
+            pgObject.setValue(json);
+            ps.setObject(index, pgObject);
+        } else {
+            ps.setObject(index, null);
+        }
     }
 }

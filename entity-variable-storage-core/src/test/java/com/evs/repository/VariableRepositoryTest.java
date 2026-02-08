@@ -43,7 +43,8 @@ class VariableRepositoryTest {
         instanceRepository = new EntityInstanceRepository(ds);
         variableRepository = new VariableRepository(ds);
 
-        Entity entity = entityRepository.save(Entity.builder().name("User").displayName("User").build());
+        Entity entity = entityRepository.findByName("User")
+                .orElseGet(() -> entityRepository.save(Entity.builder().name("User").displayName("User").build()));
         entityId = entity.id();
         new PartitionManager(ds).createEntityPartition(entityId, "User");
 

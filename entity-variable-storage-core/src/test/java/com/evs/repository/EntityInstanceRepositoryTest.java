@@ -37,7 +37,8 @@ class EntityInstanceRepositoryTest {
         runMigrations(ds);
         entityRepository = new EntityRepository(ds);
         instanceRepository = new EntityInstanceRepository(ds);
-        Entity entity = entityRepository.save(Entity.builder().name("User").displayName("User").build());
+        Entity entity = entityRepository.findByName("User")
+                .orElseGet(() -> entityRepository.save(Entity.builder().name("User").displayName("User").build()));
         entityId = entity.id();
     }
 
@@ -90,10 +91,12 @@ class EntityInstanceRepositoryTest {
 
     @Test
     void shouldFindByEntityId() {
-        instanceRepository.save(EntityInstance.builder().entityId(entityId).uuid(UUID.randomUUID()).build());
-        instanceRepository.save(EntityInstance.builder().entityId(entityId).uuid(UUID.randomUUID()).build());
+        Entity entity = entityRepository.save(
+                Entity.builder().name("UserFindByEntityId").displayName("User").build());
+        instanceRepository.save(EntityInstance.builder().entityId(entity.id()).uuid(UUID.randomUUID()).build());
+        instanceRepository.save(EntityInstance.builder().entityId(entity.id()).uuid(UUID.randomUUID()).build());
 
-        List<EntityInstance> instances = instanceRepository.findByEntityId(entityId);
+        List<EntityInstance> instances = instanceRepository.findByEntityId(entity.id());
         assertEquals(2, instances.size());
     }
 }
