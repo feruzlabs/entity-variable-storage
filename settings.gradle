@@ -7,4 +7,4 @@ include 'examples:standalone-example'
 
 // Examples use build-example.gradle (no publishing)
 project(':examples:spring-boot-example').buildFileName = 'build-example.gradle'
-project(':examples:standalone-example').buildFileName = 'build-example.gradle'
+//project(':examples:standalone-example').buildFileName = 'build-example.gradle'
