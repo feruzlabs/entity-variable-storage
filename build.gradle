@@ -13,8 +13,8 @@ allprojects {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/feruzlabs/entity-variable-storage")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+                username = project.findProperty("gpr.user") ?: System.getenv("ACTOR")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOK")
             }
         }
     }
@@ -51,8 +51,8 @@ subprojects {
                     name = "GitHubPackages"
                     url = uri("https://maven.pkg.github.com/YOUR_GITHUB_USERNAME/entity-variable-storage")
                     credentials {
-                        username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                        password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+                        username = project.findProperty("gpr.user") ?: System.getenv("ACTOR")
+                        password = project.findProperty("gpr.token") ?: System.getenv("TOK")
                     }
                 }
             }
