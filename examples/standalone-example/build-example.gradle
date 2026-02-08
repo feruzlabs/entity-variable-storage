@@ -10,6 +10,6 @@ dependencies {
     implementation project(':entity-variable-storage-core')
 
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
-    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql:1.19.0'
+    testImplementation 'org.testcontainers:junit-jupiter:1.19.0'
 }

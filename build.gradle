@@ -45,6 +45,9 @@ subprojects {
             withJavadocJar()
             withSourcesJar()
         }
+        tasks.withType(Javadoc).configureEach {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
         publishing {
             repositories {
                 maven {
