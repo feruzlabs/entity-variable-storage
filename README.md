@@ -23,7 +23,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/YOUR_GITHUB_USERNAME/entity-variable-storage")
+            url = uri("https://maven.pkg.github.com/feruzlabsentity-variable-storage")
             credentials {
                 username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.token") as String? ?: System.getenv("GITHUB_TOKEN")
@@ -53,7 +53,7 @@ repositories {
     mavenCentral()
     maven {
         name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/YOUR_GITHUB_USERNAME/entity-variable-storage")
+        url = uri("https://maven.pkg.github.com/feruzlabs/entity-variable-storage")
         credentials {
             username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
             password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
@@ -77,7 +77,7 @@ Add to your **pom.xml**:
 <repositories>
     <repository>
         <id>github</id>
-        <url>https://maven.pkg.github.com/YOUR_GITHUB_USERNAME/entity-variable-storage</url>
+        <url>https://maven.pkg.github.com/feruzlabs/entity-variable-storage</url>
     </repository>
 </repositories>
 
@@ -104,7 +104,7 @@ Add **~/.m2/settings.xml** for authentication:
     <servers>
         <server>
             <id>github</id>
-            <username>YOUR_GITHUB_USERNAME</username>
+            <username>feruzlabs</username>
             <password>YOUR_GITHUB_TOKEN</password>
         </server>
     </servers>

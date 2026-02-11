@@ -65,33 +65,33 @@ subprojects {
                     from components.java
 
                     groupId = project.group
-                    artifactId = project.name
+                    artifactId = project.name as Publication
                     version = project.version
 
                     pom {
-                        name = project.name
-                        description = 'Universal entity-variable storage system with PostgreSQL partitioning'
-                        url = 'https://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage'
+                        name = project.name as Publication
+                        description = 'Universal entity-variable storage system with PostgreSQL partitioning' as Publication
+                        url = 'https://github.com/feruzlabs/entity-variable-storage' as Publication
 
                         licenses {
                             license {
-                                name = 'The Apache License, Version 2.0'
-                                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                name = 'The Apache License, Version 2.0' as Publication
+                                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt' as Publication
                             }
                         }
 
                         developers {
                             developer {
-                                id = 'YOUR_GITHUB_USERNAME'
-                                name = 'Your Name'
-                                email = 'your.email@example.com'
+                                id = 'feruzlabs' as Publication
+                                name = 'Feruz Ostonov' as Publication
+                                email = 'your.email@example.com' as Publication
                             }
                         }
 
                         scm {
-                            connection = 'scm:git:git://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage.git'
-                            developerConnection = 'scm:git:ssh://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage.git'
-                            url = 'https://github.com/YOUR_GITHUB_USERNAME/entity-variable-storage'
+                            connection = 'scm:git:git://github.com/feruzlabs/entity-variable-storage.git' as Publication
+                            developerConnection = 'scm:git:ssh://github.com/feruzlabs/entity-variable-storage.git' as Publication
+                            url = 'https://github.com/feruzlabs/entity-variable-storage' as Publication
                         }
                     }
                 }

@@ -3,7 +3,7 @@
 ## Prerequisites
 
 1. GitHub Personal Access Token with `write:packages` scope
-2. GitHub repository: `YOUR_GITHUB_USERNAME/entity-variable-storage`
+2. GitHub repository: `feruzlabs/entity-variable-storage`
 
 ## Publishing Process
 
@@ -49,7 +49,7 @@ export GITHUB_TOKEN=YOUR_PERSONAL_ACCESS_TOKEN
 View published packages:
 
 ```
-https://github.com/YOUR_GITHUB_USERNAME?tab=packages
+https://github.com/feruzlabs?tab=packages
 ```
 
 ## Version Strategy
