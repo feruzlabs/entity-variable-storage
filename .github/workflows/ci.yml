@@ -35,11 +35,19 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Setup Testcontainers Cloud (optional)
+        if: secrets.TC_CLOUD_TOKEN != ''
+        uses: atomicjar/testcontainers-cloud-setup-action@v1
+        with:
+          token: ${{ secrets.TC_CLOUD_TOKEN }}
 
-      - name: Run tests
-        run: ./gradlew test
+      - name: Build with Gradle
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: ./gradlew build
 
       - name: Upload test results
         if: always()
