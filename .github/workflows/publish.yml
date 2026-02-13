@@ -68,6 +68,17 @@ jobs:
           ACTOR: ${{ vars.ACTOR }}
           TOK: ${{ vars.TOK }}
 
+      - name: Publish to Maven Central
+        if: vars.PUBLISH_MAVEN_CENTRAL == 'true'
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ steps.version.outputs.VERSION }}
+        env:
+          ACTOR: ${{ vars.ACTOR }}
+          TOK: ${{ vars.TOK }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:

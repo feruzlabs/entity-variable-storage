@@ -1,11 +1,13 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
+    id 'io.github.gradle-nexus.publish-plugin' version '2.0.0'
 }
 
 allprojects {
     group = 'com.evs'
-    version = project.findProperty('version') ?: '1.0.1-SNAPSHOT'
+    version = project.findProperty('version') ?: '1.0.0-SNAPSHOT'
 
     repositories {
         mavenCentral()
@@ -19,6 +21,18 @@ allprojects {
         }
     }
 }
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl = uri("https://s01.oss.sonatype.com/service/local/")
+            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.com/content/repositories/snapshots/")
+            username = project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")
+            password = project.findProperty("OSSRH_TOKEN") ?: System.getenv("OSSRH_TOKEN")
+        }
+    }
+}
+
 
 subprojects {
     apply plugin: 'java-library'
@@ -42,6 +56,7 @@ subprojects {
 
     if (!project.path.contains('examples')) {
         apply plugin: 'maven-publish'
+        apply plugin: 'signing'
         java {
             withJavadocJar()
             withSourcesJar()
@@ -95,6 +110,14 @@ subprojects {
                         }
                     }
                 }
+            }
+        }
+        signing {
+            def signingKey = rootProject.findProperty("SIGNING_KEY") ?: System.getenv("SIGNING_KEY")
+            def signingPassword = rootProject.findProperty("SIGNING_PASSWORD") ?: System.getenv("SIGNING_PASSWORD")
+            if (signingKey && signingPassword) {
+                useInMemoryPgpKeys(signingKey, signingPassword)
+                sign publishing.publications.maven
             }
         }
     }

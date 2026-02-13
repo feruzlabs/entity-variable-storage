@@ -1,9 +1,15 @@
 # Publishing Guide
 
+## Repositories
+
+- **GitHub Packages** – Maven format, works for both Maven and Gradle
+- **Maven Central** – Optional, requires Sonatype account and GPG signing
+
 ## Prerequisites
 
 1. GitHub Personal Access Token with `write:packages` scope
 2. GitHub repository: `feruzlabs/entity-variable-storage`
+3. (Maven Central) Sonatype OSSRH account and GPG key
 
 ## Publishing Process
 
@@ -44,13 +50,28 @@ export GITHUB_TOKEN=YOUR_PERSONAL_ACCESS_TOKEN
 4. Click **Publish release**
 5. GitHub Actions will run and publish to GitHub Packages
 
-### 5. Verify Publication
+### 5. Publish to Maven Central (Optional)
+
+1. Add repository variable: `PUBLISH_MAVEN_CENTRAL=true`
+2. Add secrets: `OSSRH_USERNAME`, `OSSRH_TOKEN`, `SIGNING_KEY`, `SIGNING_PASSWORD`
+3. GitHub Actions will run `publishToSonatype closeAndReleaseSonatypeStagingRepository` when credentials are set
+
+Local Maven Central publish:
+
+```bash
+export OSSRH_USERNAME=your-sonatype-username
+export OSSRH_TOKEN=your-sonatype-token
+export SIGNING_KEY=your-base64-gpg-private-key
+export SIGNING_PASSWORD=your-gpg-passphrase
+./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=1.0.0
+```
+
+### 6. Verify Publication
 
 View published packages:
 
-```
-https://github.com/feruzlabs?tab=packages
-```
+- GitHub Packages: https://github.com/feruzlabs?tab=packages
+- Maven Central: https://central.sonatype.com/
 
 ## Version Strategy
 
