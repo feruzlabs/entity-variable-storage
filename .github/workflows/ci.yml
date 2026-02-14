@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
 
     steps:
       - name: Checkout code
@@ -36,7 +39,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Setup Testcontainers Cloud (optional)
-        if: secrets.TC_CLOUD_TOKEN != ''
+        if: vars.TESTCONTAINERS_CLOUD == 'true'
         uses: atomicjar/testcontainers-cloud-setup-action@v1
         with:
           token: ${{ secrets.TC_CLOUD_TOKEN }}
