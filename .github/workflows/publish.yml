@@ -20,6 +20,7 @@ jobs:
     env:
       DOCKER_HOST: unix:///var/run/docker.sock
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
+      TESTCONTAINERS_RYUK_DISABLED: true
     permissions:
       contents: read
       packages: write
@@ -37,6 +38,11 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+
+      - name: Ensure Docker is ready for Testcontainers
+        run: |
+          docker info
+          docker pull postgres:16-alpine
 
       - name: Generate Gradle wrapper
         if: hashFiles('gradle/wrapper/gradle-wrapper.jar') == ''
