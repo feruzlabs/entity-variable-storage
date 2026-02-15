@@ -1,5 +1,17 @@
 # Publishing Guide
 
+## Maven ga yuklash — qisqacha
+
+| Maqsad | Qilish kerak |
+|--------|----------------|
+| **Lokal Maven** (~/.m2) | `./gradlew publishToMavenLocal` — hech qanday credential kerak emas |
+| **GitHub Packages** | `ACTOR` (GitHub username) va `TOK` (PAT) o‘rnating, keyin `./gradlew publish -Pversion=1.0.0` |
+| **Maven Central** | Sonatype (OSSRH) account + GPG signing; `OSSRH_USERNAME`, `OSSRH_TOKEN`, `SIGNING_KEY`, `SIGNING_PASSWORD` o‘rnating |
+
+Batafsil: quyidagi bo‘limlar va [.github/workflows/publish.yml](.github/workflows/publish.yml).
+
+---
+
 ## Repositories
 
 - **GitHub Packages** – Maven format, works for both Maven and Gradle
@@ -34,11 +46,11 @@ git push origin v1.0.0
 # Ensure Gradle wrapper exists
 gradle wrapper --gradle-version 8.5
 
-# Set credentials
-export GITHUB_ACTOR=YOUR_GITHUB_USERNAME
-export GITHUB_TOKEN=YOUR_PERSONAL_ACCESS_TOKEN
+# GitHub Packages uchun credentials (build.gradle ACTOR va TOK ishlatadi)
+export ACTOR=YOUR_GITHUB_USERNAME
+export TOK=YOUR_PERSONAL_ACCESS_TOKEN
 
-# Publish
+# Publish (GitHub Packages ga; Sonatype faqat OSSRH_* o'rnatilganda)
 ./gradlew publish -Pversion=1.0.0
 ```
 

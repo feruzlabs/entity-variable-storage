@@ -24,11 +24,13 @@ allprojects {
 
 nexusPublishing {
     repositories {
-        sonatype {
-            nexusUrl = uri("https://s01.oss.sonatype.com/service/local/")
-            snapshotRepositoryUrl = uri("https://s01.oss.sonatype.com/content/repositories/snapshots/")
-            username = project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")
-            password = project.findProperty("OSSRH_TOKEN") ?: System.getenv("OSSRH_TOKEN")
+        if (project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")) {
+            sonatype {
+                nexusUrl = uri("https://s01.oss.sonatype.com/service/local/")
+                snapshotRepositoryUrl = uri("https://s01.oss.sonatype.com/content/repositories/snapshots/")
+                username = project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")
+                password = project.findProperty("OSSRH_TOKEN") ?: System.getenv("OSSRH_TOKEN")
+            }
         }
     }
 }
@@ -67,12 +69,14 @@ subprojects {
         publishing {
             repositories {
                 mavenLocal()
-                maven {
-                    name = "GitHubPackages"
-                    url = uri("https://maven.pkg.github.com/feruzlabs/entity-variable-storage")
-                    credentials {
-                        username = project.findProperty("gpr.user") ?: System.getenv("ACTOR")
-                        password = project.findProperty("gpr.token") ?: System.getenv("TOK")
+                if (project.findProperty("gpr.user") ?: System.getenv("ACTOR")) {
+                    maven {
+                        name = "GitHubPackages"
+                        url = uri("https://maven.pkg.github.com/feruzlabs/entity-variable-storage")
+                        credentials {
+                            username = project.findProperty("gpr.user") ?: System.getenv("ACTOR")
+                            password = project.findProperty("gpr.token") ?: System.getenv("TOK")
+                        }
                     }
                 }
             }
