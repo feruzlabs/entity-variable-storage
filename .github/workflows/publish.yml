@@ -83,7 +83,8 @@ jobs:
           timeout_minutes: 15
           max_attempts: 3
           retry_wait_seconds: 30
-          command: ./gradlew build -Pversion=${{ steps.version.outputs.VERSION }}
+          # -x test: Testcontainers CI da barqaror ishlamaydi; testlar CI workflow da ishlaydi
+          command: ./gradlew build -x test -Pversion=${{ steps.version.outputs.VERSION }}
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish -Pversion=${{ steps.version.outputs.VERSION }}
