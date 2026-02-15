@@ -16,6 +16,8 @@ jobs:
     env:
       DOCKER_HOST: unix:///var/run/docker.sock
       TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE: /var/run/docker.sock
+      # Ryuk ni CI da o‘chirish — ba’zi muhitlarda socket muammosini kamaytiradi
+      TESTCONTAINERS_RYUK_DISABLED: true
 
     steps:
       - name: Checkout code
@@ -27,6 +29,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: 'gradle'
+
+      - name: Ensure Docker is ready for Testcontainers
+        run: |
+          docker info
+          docker pull postgres:16-alpine
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3

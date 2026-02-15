@@ -265,6 +265,37 @@ docker compose up -d
 # Swagger UI: http://localhost:8080/swagger-ui.html
 ```
 
+## Running CI locally
+
+CI workflow’ni push qilmasdan lokalda tekshirish uchun ikkita usul:
+
+### 1) CI bilan bir xil muhit (skript)
+
+CI dagi kabi env o‘rnatib `./gradlew build` ishga tushiring:
+
+**Windows (PowerShell):**
+```powershell
+.\scripts\ci-local.ps1
+```
+
+**Linux / macOS:**
+```bash
+./scripts/ci-local.sh
+```
+
+### 2) GitHub Actions ni lokalda — act
+
+[act](https://github.com/nektos/act) orqali to‘liq workflow’ni Docker ichida ishga tushirish:
+
+1. [act o‘rnating](https://github.com/nektos/act#installation) (Chocolatey: `choco install act`, scoop: `scoop install act`, yoki GitHub Releases).
+2. Loyiha ildizida:
+   ```bash
+   act push
+   ```
+   yoki faqat CI workflow: `act push -W .github/workflows/ci.yml`.
+
+Birinchi marta ishga tushganda runner image (medium yoki large) tanlash so‘raladi; Testcontainers uchun Docker ishlashi kerak (Docker Desktop yoki Docker Engine).
+
 ## Publishing
 
 See [PUBLISHING.md](PUBLISHING.md) for release and publishing instructions.
